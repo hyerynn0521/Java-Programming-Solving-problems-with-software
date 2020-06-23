@@ -1,1 +1,58 @@
+package StringFirstAssignments;
+
+
+/**
+ * Write a description of Part3 here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class Part3 {
+    public String twoOccurrences(String stringa, String stringb){
+        String result  = "";
+        int ainb1 = stringb.indexOf(stringa);
+        if (ainb1 !=-1){//if stringa is in stringb
+            if (stringb.indexOf(stringa, ainb1+3)!= -1){
+                //and if stringa appears one more time
+                return result = "true";
+            }
+            //if stringa doesn't appear one more time
+            else{
+                return result = "false";
+            }
+            
+        }
+        //if stringa is not found at all in string b
+        if (ainb1 == -1){
+            return result = "false";
+        }
+        return result;
+    }
+    public void testing(){
+        String stringa = "ATG";
+        String stringb = "CCATGAACTCGGATGCA";
+        System.out.println(" Piece you're looking for:" + stringa);
+        System.out.println("The whole string:" + stringb);
+        System.out.println("The piece is in the string at least 2 times:" + twoOccurrences(stringa, stringb));
+        System.out.println("The string after the first occurence of the piece:"+ lastPart(stringa, stringb));
+        
+        stringa = "ATG";
+        stringb = "CCATGAACTCGGACA";
+        System.out.println(" Piece you're looking for:" + stringa);
+        System.out.println("The whole string:" + stringb);
+        System.out.println("The piece is in the string at least 2 times:" + twoOccurrences(stringa, stringb));
+        System.out.println("The string after the first occurence of the piece:"+ lastPart(stringa, stringb));
+    }
+    public String lastPart(String stringa, String stringb) {
+        String result = "";
+        int ainb = stringb.indexOf(stringa);
+        if (ainb ==-1){
+            return result = stringb;
+        }
+        if (ainb != -1){
+            return result = stringb.substring(ainb+(stringa.length()), stringb.length());
+        }
+        return result;
+    }
+}
 
