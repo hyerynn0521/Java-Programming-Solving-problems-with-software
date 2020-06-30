@@ -1,0 +1,69 @@
+package WhichCountry;
+import edu.duke.*;
+import org.apache.commons.csv.*;
+
+/**
+ * Write a description of Part1 here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class Part1 {
+    public void tester(){
+        FileResource fr = new FileResource();
+        CSVParser parser = fr.getCSVParser();
+        bigExporters(parser, "$999,999,999,999");
+        
+    }
+    public String countryInfo(CSVParser parser, String country){
+        
+        for (CSVRecord record: parser){
+           String countryofinterest = record.get("Country");
+           if (countryofinterest.equalsIgnoreCase(country)){
+                String Country = record.get("Country")+":";
+                String Exports = record.get("Exports")+":";
+                String Value = record.get("Value (dollars)");
+                String result = Country + Exports+Value;
+                return result;
+           }   
+           
+        }
+        
+        return "NOT FOUND";
+    }
+    public void listExportersTwoProducts (CSVParser parser, String exportItem1, 
+    String exportItem2){
+        for (CSVRecord record: parser){
+            String itemsOfInterest = record.get("Exports");
+            if (itemsOfInterest.contains(exportItem1) &&
+            itemsOfInterest.contains(exportItem2)){
+                System.out.println(record.get("Country"));
+            }
+           
+        }
+    }
+    public int numberOfExporters(CSVParser parser, String exportItem){
+        int currcount = 0;
+        for(CSVRecord record: parser){
+            String itemOfInterest = record.get("Exports");
+            if (itemOfInterest.contains(exportItem)){
+                currcount ++;
+            }
+            
+        }
+        return currcount;
+    }
+    public void bigExporters(CSVParser parser, String amount){
+        for (CSVRecord record: parser){
+            String amountOfInterest = record.get("Value (dollars)");
+            int length1 = amount.length();
+            int length2 = amountOfInterest.length();
+            if (length2>length1){
+                System.out.print(record.get("Country"));
+                System.out.println(" " +record.get("Value (dollars)"));
+            }
+           
+        }
+    }
+}
+
