@@ -1,0 +1,90 @@
+package WeatherData;
+import edu.duke.*;
+import org.apache.commons.csv.*;
+import java.io.*;
+/**
+ * Write a description of Part1 here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class Part1 {
+    public CSVRecord coldestHourInFile(CSVParser parser){
+        FileResource fr = new FileResource();
+        CSVRecord smallestSoFar  = null;
+        for (CSVRecord currentRow : parser){
+            if (smallestSoFar == null){
+                smallestSoFar = currentRow;
+            }
+            else{
+                double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
+                double smallestTemp = Double.parseDouble(smallestSoFar.get("TemperatureF"));
+                if (currentTemp < smallestTemp && currentTemp != -9999){
+                    smallestSoFar = currentRow;
+                }
+            }
+        }
+        return smallestSoFar;
+    }
+    public void testColdestHourInFile(){
+        FileResource fr = new FileResource();
+        CSVRecord smallest = coldestHourInFile(fr.getCSVParser());
+        System.out.println("The coldest temperature on that day was "+ smallest.get("TemperatureF"));
+        
+    }
+    public String fileWithColdestTemperature(){
+        DirectoryResource dr = new DirectoryResource();
+        CSVRecord smallestSoFar = null;
+        String smallestFileName = "";
+        String currFileName = "";
+        File File = null;
+        String result = "";
+        for (File f : dr.selectedFiles()) {
+            FileResource fr = new FileResource(f);
+            CSVRecord currentRow = coldestHourInFile(fr.getCSVParser());
+            
+            
+            
+            if (smallestSoFar == null){
+                currentRow = smallestSoFar;
+                currFileName = f.getName();
+                smallestFileName = currFileName;
+                File = f;
+                
+            }
+            else{
+                double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
+                double smallestTemp = Double.parseDouble(smallestSoFar.get("TemperatureF"));
+                if (currentTemp < smallestTemp && currentTemp != -9999){
+                    
+                    currentRow = smallestSoFar;
+                    currFileName = f.getName();
+                    smallestFileName = currFileName;
+                    File = f;
+      
+                    
+                }
+                
+            }
+        } 
+        
+        return smallestFileName;
+    }
+    public void printAllRecords(CSVParser parser){
+        for (CSVRecord record : parser){
+            System.out.println(record.get("DateUTC")+ record.get("TimeEST")+ ":"+
+            record.get("TemperatureF"));
+        }
+    }
+    public void testFileWithColdestTemperature(){
+        String smallest = fileWithColdestTemperature();
+        System.out.println("Coldest temperature was in file " + smallest);
+        
+        FileResource fr = new FileResource();
+        System.out.println("Coldest temperature on that day was "+ 
+        coldestHourInFile(fr.getCSVParser()));
+        
+        
+    }
+    
+}
