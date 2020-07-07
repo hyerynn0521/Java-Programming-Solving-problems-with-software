@@ -1,0 +1,50 @@
+package MakeInversion;
+
+/**
+ * Create a gray scale version of an image by setting all color components of each pixel to the same value.
+ * 
+ * @author Duke Software Team 
+ */
+import edu.duke.*;
+import java.io.*;
+
+public class BatchInversions {
+    //I started with the image I wanted (inImage)
+    public ImageResource makeInversion(ImageResource inImage) {
+        //I made a blank image of the same size
+        ImageResource outImage = new ImageResource(inImage.getWidth(), inImage.getHeight());
+
+        for (Pixel pixel: outImage.pixels()) {
+         
+            Pixel inPixel = inImage.getPixel(pixel.getX(), pixel.getY());
+            //if doing gray scale, int average = (inPixel.getRed()+inPixel.getGreen()+inPixel.getBlue())/3
+            // and then set each of the red, green and blue pixel to average(ex. pixel.setRed(average))
+            int rValue = 255- inPixel.getRed();
+            int gValue = 255-inPixel.getGreen();
+            int bValue = 255 - inPixel.getBlue();
+        
+            pixel.setRed(rValue);
+        
+            pixel.setGreen(gValue);
+          
+            pixel.setBlue(bValue);
+        }
+        //outImage is your answer
+        return outImage;
+    }
+
+    public void selectAndConvert() {
+        DirectoryResource dr = new DirectoryResource();
+            for (File f : dr.selectedFiles()) {
+            
+            ImageResource image = new ImageResource(f);
+            ImageResource newImage = makeInversion(image);
+            String fname = image.getFileName();
+            String newName = "inverted-" + fname;
+            newImage.setFileName(newName);
+            newImage.draw();
+            newImage.save();
+        }
+        
+    }
+}
